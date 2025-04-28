@@ -19,9 +19,11 @@ RUN apt update && apt install -y \
     htop \
     mesa-utils \
     ncdu \
+    qv4l2 \
     sudo \
     tmux \
     tree \
+    v4l-utils \
     vim \
     wget \
     && rm -rf /var/lib/apt/lists/*
@@ -84,6 +86,7 @@ RUN mkdir -p /var/dependencies \
     && git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv_extra.git \
     && git clone --depth 1 --branch 4.11.0 https://github.com/opencv/opencv_contrib.git \
     && cd opencv \
+    && . /opt/intel/oneapi/setvars.sh \
     && cmake \
         -D CMAKE_BUILD_TYPE=Release \
         -D WITH_OPENGL=ON \
@@ -115,5 +118,6 @@ RUN if getent passwd ${USER_UID}; then \
 RUN groupadd --gid ${USER_GID} ${USERNAME} \
     && useradd --uid ${USER_UID} --gid ${USER_GID} --shell /bin/bash --create-home ${USERNAME} \
     && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers    
+
 
 CMD ["sleep", "infinity"]
